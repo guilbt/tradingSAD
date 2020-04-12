@@ -1,0 +1,36 @@
+version: '3'
+volumes:
+  data:
+networks:
+  postgres-network:
+services:
+  db:
+    container_name: guilbt_cadastropessoas_db
+    image: postgres:9.6
+    restart: always
+    volumes:
+      - data:/var/lib/postgresql/data
+      # Scripts
+      - ./scripts:/scripts
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 15432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: cadastropessoas42
+    networks:
+      - postgres-network
+ #service:
+ #   container_name: guilbt_cadastropessoas
+ #   image: maven:3.6-jdk-8
+ #   ports:
+  #   - 8080:8080
+   # networks:
+  #    - postgres-network
+  #  depends_on:
+  #    - db
+  #  volumes:
+  #    - ./:/cadastropessoas
+  #  command: 
+  #    bash -c "cd /cadastropessoas; mvn clean install; 
+  #    java -jar target/cadastropessoas.jar"

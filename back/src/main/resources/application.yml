@@ -1,0 +1,20 @@
+spring:
+    profiles:
+        name: cadastropessoas
+        active: prod
+    datasource:
+        url: jdbc:postgresql://localhost:15432/teste
+        username: postgres
+        password: cadastropessoas42
+#        schema: teste
+
+server:
+    port: 8081
+    servlet:
+        context-path: /api
+
+#logging:
+#    file: /var/log/cadastropessoas.log
+#    level: INFO
+
+
