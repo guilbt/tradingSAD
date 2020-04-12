@@ -45,9 +45,15 @@ public class PessoasService {
             pessoasDAO.persist(pessoa);
         } catch (DataIntegrityViolationException ex) {
             throw new ConflictException(
-                String.format("Já existe pessoa cadastrada com o CPF %s", pessoa.getCpf())
+                    String.format("Já existe pessoa cadastrada com o CPF %s", pessoa.getCpf())
             );
         }
         return pessoa.getId();
+    }
+
+    @Transactional
+    public Long createPessoaValidatingParametersV2(PessoaDTO pessoaDTO, String principalEmail) {
+        PreConditions.notNull(pessoaDTO.getEndereco(), "endereco");
+        return createPessoaValidatingParameters(pessoaDTO, principalEmail);
     }
 }

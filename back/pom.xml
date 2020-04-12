@@ -74,10 +74,23 @@
             </exclusions>
         </dependency>
 
+        <!-- Dependência p/ Validação de CPF -->
         <dependency>
             <groupId>br.com.caelum.stella</groupId>
             <artifactId>caelum-stella-bean-validation</artifactId>
             <version>2.1.2</version>
+        </dependency>
+
+        <!-- Dependência p/ Doc -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
         </dependency>
     </dependencies>
 

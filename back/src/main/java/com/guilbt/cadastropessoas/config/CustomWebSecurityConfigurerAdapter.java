@@ -61,6 +61,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             .antMatchers(HttpMethod.OPTIONS, "**").permitAll()
             .antMatchers("/login*").permitAll()
             .antMatchers("/source").permitAll()
+            .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
+                .permitAll()
             .anyRequest().authenticated()
             .and()
 

@@ -56,7 +56,7 @@ public class PreConditions {
             throw new PreConditionException(
                 "data",
                 String.format(
-                    "%s não é uma data valida", date
+                    "%s não é uma data valida, formato esperado: yyyy-MM-dd", date
                 )
             );
         }

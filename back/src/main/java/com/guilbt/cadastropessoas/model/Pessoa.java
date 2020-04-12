@@ -46,6 +46,9 @@ public class Pessoa {
     @Column(name = "ESTA_ARQUIVADO", nullable = false)
     private Boolean estaArquivado;
 
+    @Column(name = "ENDERECO", nullable = true)
+    private String endereco;
+
     public enum Sexo implements EnumBase<String> {
         F("F"),
         M("M");

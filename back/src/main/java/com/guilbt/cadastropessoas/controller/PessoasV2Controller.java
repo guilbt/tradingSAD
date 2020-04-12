@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/pessoas")
-public class PessoasController {
+@RequestMapping("/pessoas/v2")
+public class PessoasV2Controller {
 
     private PessoasService pessoasService;
 
     @Autowired
-    public PessoasController(
+    public PessoasV2Controller(
         PessoasService pessoasService
     ) {
         this.pessoasService = pessoasService;
@@ -27,7 +27,7 @@ public class PessoasController {
             Principal principal,
             @RequestBody PessoaDTO pessoa
     ) {
-        return pessoasService.createPessoaValidatingParameters(pessoa, principal.getName());
+        return pessoasService.createPessoaValidatingParametersV2(pessoa, principal.getName());
     }
-
+    
 }

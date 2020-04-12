@@ -19,6 +19,7 @@ public class PessoaDTO {
     private String naturalidade;
     private String nacionalidade;
     private String cpf;
+    private String endereco;
 
     public Pessoa getDBObject() {
         Pessoa pessoa = new Pessoa();
@@ -33,6 +34,7 @@ public class PessoaDTO {
         pessoa.setNacionalidade(this.nacionalidade);
         pessoa.setCpf(this.cpf);
         pessoa.setEstaArquivado(false);
+        pessoa.setEndereco(this.endereco);
         return pessoa;
     }
 }
