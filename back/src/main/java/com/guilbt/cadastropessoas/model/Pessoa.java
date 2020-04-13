@@ -21,8 +21,7 @@ public class Pessoa {
     private String nome;
 
     @Column(name = "SEXO")
-//    @Convert(converter = PessoaSexoConverter.class)
-//    @Enumerated(EnumType.STRING)
+    @Convert(converter = PessoaSexoConverter.class)
     private Sexo sexo;
 
     @Column(name = "EMAIL", nullable = false)

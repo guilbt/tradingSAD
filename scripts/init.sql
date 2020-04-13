@@ -25,7 +25,8 @@ CREATE TABLE teste.PESSOA (
   nacionalidade TEXT,
   cpf TEXT unique,
   esta_arquivado boolean default false,
-  usuario_cadastro_id int constraint table_name_usuario__fk references teste.usuario ("usuario_id")
+  usuario_cadastro_id int constraint table_name_usuario__fk references teste.usuario ("usuario_id"),
+  endereco TEXT
 );
 
 create unique index pessoa_cpf_uindex

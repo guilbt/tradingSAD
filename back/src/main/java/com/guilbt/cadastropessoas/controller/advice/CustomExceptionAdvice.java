@@ -1,6 +1,7 @@
 package com.guilbt.cadastropessoas.controller.advice;
 
 import com.guilbt.cadastropessoas.controller.exceptions.ConflictException;
+import com.guilbt.cadastropessoas.controller.exceptions.NotFoundException;
 import com.guilbt.cadastropessoas.controller.exceptions.PreConditionException;
 import com.guilbt.cadastropessoas.model.dto.CampoErro;
 import org.springframework.http.HttpStatus;
@@ -22,14 +23,14 @@ public class CustomExceptionAdvice implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {
         // 401
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication Failed");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Falha na autenticação");
     }
 
     @ExceptionHandler (value = {AccessDeniedException.class})
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AccessDeniedException accessDeniedException) throws IOException {
         // 403
-        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Authorization Failed : " + accessDeniedException.getMessage());
+        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Falha na autorização: " + accessDeniedException.getMessage());
     }
 
     @ExceptionHandler(ConflictException.class)
@@ -43,5 +44,11 @@ public class CustomExceptionAdvice implements AuthenticationEntryPoint {
             (PreConditionException e, HttpServletRequest request) {
         CampoErro campoErro = new CampoErro(e.getCampo(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(campoErro);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException
+            (NotFoundException e, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/pessoas/v2")
+@RequestMapping("/v2/pessoas")
 public class PessoasV2Controller {
 
     private PessoasService pessoasService;

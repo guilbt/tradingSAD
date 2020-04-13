@@ -21,7 +21,7 @@ public class PessoaDTO {
     private String cpf;
     private String endereco;
 
-    public Pessoa getDBObject() {
+    public Pessoa toDBObject() {
         Pessoa pessoa = new Pessoa();
         pessoa.setId(this.id);
         pessoa.setNome(this.nome);

@@ -3,7 +3,7 @@ spring:
         name: cadastropessoas
         active: prod
     datasource:
-        url: jdbc:postgresql://localhost:15432/teste
+        url: jdbc:postgresql://db:5432/teste
         username: postgres
         password: cadastropessoas42
 #        schema: teste

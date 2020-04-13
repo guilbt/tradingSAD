@@ -20,17 +20,30 @@ services:
       POSTGRES_PASSWORD: cadastropessoas42
     networks:
       - postgres-network
- #service:
- #   container_name: guilbt_cadastropessoas
- #   image: maven:3.6-jdk-8
- #   ports:
-  #   - 8080:8080
-   # networks:
-  #    - postgres-network
-  #  depends_on:
-  #    - db
-  #  volumes:
-  #    - ./:/cadastropessoas
-  #  command: 
-  #    bash -c "cd /cadastropessoas; mvn clean install; 
-  #    java -jar target/cadastropessoas.jar"
+  service:
+    container_name: guilbt_cadastropessoas
+    image: maven:3.6-jdk-8
+    ports:
+      - 8081:8081
+    networks:
+      - postgres-network
+    depends_on:
+      - db
+    volumes:
+      - ./back:/cadastropessoas
+    command: 
+      bash -c "cd /cadastropessoas; mvn clean install; 
+      java -jar target/cadastropessoas.jar"
+  front:
+    container_name: guilbt_cadastropessoas_front
+    build:
+      context: ./front
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /front/node_modules
+      - ./front:/front
+    ports:
+      - 3000:3000
+    stdin_open: true    
+    depends_on:
+      - service
