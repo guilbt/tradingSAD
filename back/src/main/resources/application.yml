@@ -1,11 +1,11 @@
 spring:
     profiles:
-        name: cadastropessoas
+        name: tradingsad
         active: prod
     datasource:
         url: jdbc:postgresql://db:5432/teste
         username: postgres
-        password: cadastropessoas42
+        password: tradingSAD42
 #        schema: teste
 
 server:

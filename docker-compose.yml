@@ -5,7 +5,7 @@ networks:
   postgres-network:
 services:
   db:
-    container_name: guilbt_cadastropessoas_db
+    container_name: guilbt_tradingsad_db
     image: postgres:9.6
     restart: always
     volumes:
@@ -17,11 +17,11 @@ services:
       - 15432:5432
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: cadastropessoas42
+      POSTGRES_PASSWORD: tradingSAD42
     networks:
       - postgres-network
   service:
-    container_name: guilbt_cadastropessoas
+    container_name: guilbt_tradingsad
     image: maven:3.6-jdk-8
     ports:
       - 8081:8081
@@ -30,20 +30,20 @@ services:
     depends_on:
       - db
     volumes:
-      - ./back:/cadastropessoas
+      - ./back:/tradingsad
     command: 
-      bash -c "cd /cadastropessoas; mvn clean install; 
-      java -jar target/cadastropessoas.jar"
-  front:
-    container_name: guilbt_cadastropessoas_front
-    build:
-      context: ./front
-      dockerfile: Dockerfile.dev
-    volumes:
-      - /front/node_modules
-      - ./front:/front
-    ports:
-      - 3000:3000
-    stdin_open: true    
-    depends_on:
-      - service
+      bash -c "cd /tradingsad; mvn clean install; 
+      java -jar target/tradingsad.jar"
+  # front:
+  #   container_name: guilbt_tradingsad_front
+  #   build:
+  #     context: ./front
+  #     dockerfile: Dockerfile.dev
+  #   volumes:
+  #     - /front/node_modules
+  #     - ./front:/front
+  #   ports:
+  #     - 3000:3000
+  #   stdin_open: true    
+  #   depends_on:
+  #     - service

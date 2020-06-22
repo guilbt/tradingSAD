@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.guilbt</groupId>
-    <artifactId>cadastro-pessoas</artifactId>
+    <artifactId>trading-sad</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>cadastro-pessoas</name>
+    <name>trading-sad</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -74,13 +74,6 @@
             </exclusions>
         </dependency>
 
-        <!-- Dependência p/ Validação de CPF -->
-        <dependency>
-            <groupId>br.com.caelum.stella</groupId>
-            <artifactId>caelum-stella-bean-validation</artifactId>
-            <version>2.1.2</version>
-        </dependency>
-
         <!-- Dependência p/ Doc -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -95,7 +88,7 @@
     </dependencies>
 
     <build>
-        <finalName>cadastropessoas</finalName>
+        <finalName>tradingsad</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
