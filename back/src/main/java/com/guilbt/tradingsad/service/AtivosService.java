@@ -74,7 +74,8 @@ public class AtivosService {
             );
             ativoUsuarioDAO.merge(usuarioAtivo);
         }
-        usuario.setFundos(usuario.getFundos().subtract(valor));
+        BigDecimal valorGasto = quantidadeComprada.multiply(valores.getPreco()).setScale(4, RoundingMode.HALF_EVEN);
+        usuario.setFundos(usuario.getFundos().subtract(valorGasto));
         usuariosDAO.merge(usuario);
     }
 
