@@ -1,4 +1,4 @@
-# Sistema Mock-Up de um SAD para Aplicações
+# Sistema Mock-Up de um SAD para Investimentos
 Esta aplicação foi construida utilizando https://github.com/guilbt/cadastropessoas como boilerplate.
 
 
@@ -17,6 +17,6 @@ http://localhost:8081/api/swagger-ui.html;
 - Para utilizar as outras rotas da aplicação, é necessário primeiro acessar a rota de Login, usando o usuário base (username: usuario@default.com, password: pass), para conseguir um token de sessão
 - A aplicação permite que um usuário:
 	- Informe um valor que deseja aplicar;
-	- Busque um subconjunto dos ativos disponíveis de acordo com um valor;
+	- Busque um subconjunto dos ativos indicados de acordo com um valor;
 	- Invista um montante em um ativo;
 	- Busque o total investido e o subconjunto de cada ativo (sua carteira).
