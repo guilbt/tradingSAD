@@ -18,10 +18,10 @@ public class UsuariosDAO {
 
     public Usuario getByEmail(String email) {
         return entityManager.createQuery(
-            "SELECT usr from Usuario usr where usr.email = :email",
-            Usuario.class
+                "SELECT usr from Usuario usr where usr.email = :email",
+                Usuario.class
         ).setParameter("email", email)
-        .getSingleResult();
+                .getSingleResult();
     }
 
     public Long getIdByEmail(String email) {

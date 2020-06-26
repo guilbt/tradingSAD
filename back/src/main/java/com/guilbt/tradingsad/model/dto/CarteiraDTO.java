@@ -15,7 +15,7 @@ public class CarteiraDTO {
         this.ativos = ativos;
         this.fundos = fundos;
         this.valorTotalInvestido = ativos.stream()
-            .map(AtivoInvestidoDTO::getValorTotal)
-            .reduce(BigDecimal.ZERO,BigDecimal::add);
+                .map(AtivoInvestidoDTO::getValorTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

@@ -11,7 +11,8 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(of = "id")
 public class Usuario {
-    @Column(name = "USUARIO_ID") @Id
+    @Column(name = "USUARIO_ID")
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

@@ -1,19 +1,19 @@
 package com.guilbt.tradingsad.service.client;
 
-import com.guilbt.tradingsad.controller.exceptions.NegocioException;
+import com.guilbt.tradingsad.controller.exceptions.UnavailableException;
 import com.guilbt.tradingsad.model.dto.alphaVantage.AtivoValoresDTO;
 import com.guilbt.tradingsad.model.dto.alphaVantage.AtivoValoresDTOWrapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
 public class AlphaVantageClient {
-    private final SimpleRestClient simpleRestClient;
     private static final String DEFAULT_URL = "https://www.alphavantage.co";
+    private final SimpleRestClient simpleRestClient;
     private final String apikey;
 
     public AlphaVantageClient() {
         this.simpleRestClient = new SimpleRestClient(
-            DEFAULT_URL
+                DEFAULT_URL
         );
         this.apikey = "7YT2DNBU8RK3AEKH";
     }
@@ -30,15 +30,15 @@ public class AlphaVantageClient {
                     AtivoValoresDTOWrapper.class
             );
             AtivoValoresDTOWrapper ativoValoresDTOWrapper = response.getBody();
-            if(ativoValoresDTOWrapper.getNote() != null) {
-                throw new NegocioException("Limite de requisicoes ao site https://www.alphavantage.co atingido, espere alguns minutos e tente novamente.");
+            if (ativoValoresDTOWrapper.getNote() != null) {
+                throw new UnavailableException("Limite de requisicoes ao site https://www.alphavantage.co atingido, espere alguns minutos e tente novamente.");
             }
             return ativoValoresDTOWrapper.getAtivoValores();
         } catch (RestClientException ex) {
-            throw new NegocioException(
-                String.format(
-                    "Erro ao buscar informações do simbolo %s do site da Alpha Vantage ", simbolo
-                )
+            throw new UnavailableException(
+                    String.format(
+                            "Erro ao buscar informações do simbolo %s do site da Alpha Vantage ", simbolo
+                    )
             );
         }
     }

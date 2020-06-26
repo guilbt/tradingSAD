@@ -9,5 +9,6 @@ public class AtivoInvestidoDTO {
     private String nome;
     private String simbolo;
     private BigDecimal quantidade;
+    private BigDecimal precoUnitario;
     private BigDecimal valorTotal;
 }

@@ -1,9 +1,6 @@
 package com.guilbt.tradingsad.controller.advice;
 
-import com.guilbt.tradingsad.controller.exceptions.ConflictException;
-import com.guilbt.tradingsad.controller.exceptions.NotFoundException;
-import com.guilbt.tradingsad.controller.exceptions.PreConditionException;
-import com.guilbt.tradingsad.controller.exceptions.NegocioException;
+import com.guilbt.tradingsad.controller.exceptions.*;
 import com.guilbt.tradingsad.model.dto.CampoErroDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +23,7 @@ public class CustomExceptionAdvice implements AuthenticationEntryPoint {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Falha na autenticação");
     }
 
-    @ExceptionHandler (value = {AccessDeniedException.class})
+    @ExceptionHandler(value = {AccessDeniedException.class})
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AccessDeniedException accessDeniedException) throws IOException {
         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Falha na autorização: " + accessDeniedException.getMessage());
@@ -55,5 +52,11 @@ public class CustomExceptionAdvice implements AuthenticationEntryPoint {
     public ResponseEntity<String> handleUntreatedCaseException
             (NegocioException e, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
+    @ExceptionHandler(UnavailableException.class)
+    public ResponseEntity<String> handleUnavailableCaseException
+            (UnavailableException e, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
     }
 }

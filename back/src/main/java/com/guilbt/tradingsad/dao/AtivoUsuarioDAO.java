@@ -24,22 +24,26 @@ public class AtivoUsuarioDAO {
     @Transactional
     public void persist(UsuarioAtivo usuarioAtivo) {
         entityManager.persist(usuarioAtivo);
-    };
+    }
+
+    ;
 
     @Transactional
     public void merge(UsuarioAtivo usuarioAtivo) {
         entityManager.merge(usuarioAtivo);
-    };
+    }
+
+    ;
 
     public UsuarioAtivo recuperar(Long usuarioId, Long ativoId) {
         try {
             return entityManager.createQuery("" +
-                        "SELECT usAt FROM UsuarioAtivo usAt" +
-                        " where usAt.usuarioId = :usuarioId and usAt.ativoId = :ativoId ",
+                            "SELECT usAt FROM UsuarioAtivo usAt" +
+                            " where usAt.usuarioId = :usuarioId and usAt.ativoId = :ativoId ",
                     UsuarioAtivo.class
             ).setParameter("usuarioId", usuarioId)
-            .setParameter("ativoId", ativoId)
-            .getSingleResult();
+                    .setParameter("ativoId", ativoId)
+                    .getSingleResult();
         } catch (NoResultException ex) {
             return null;
         }
@@ -52,11 +56,11 @@ public class AtivoUsuarioDAO {
                 "    JOIN TESTE.USUARIO_ATIVO ON ativo.ativo_id = usuario_ativo.ativo_id" +
                 "    WHERE USUARIO_ID = :usuarioId ;"
         ).setParameter("usuarioId", usuarioId)
-        .unwrap(NativeQuery.class)
-        .addScalar("nome", StringType.INSTANCE)
-        .addScalar("simbolo", StringType.INSTANCE)
-        .addScalar("quantidade", BigDecimalType.INSTANCE)
-        .setResultTransformer(Transformers.aliasToBean(AtivoInvestidoDTO.class))
-        .list();
+                .unwrap(NativeQuery.class)
+                .addScalar("nome", StringType.INSTANCE)
+                .addScalar("simbolo", StringType.INSTANCE)
+                .addScalar("quantidade", BigDecimalType.INSTANCE)
+                .setResultTransformer(Transformers.aliasToBean(AtivoInvestidoDTO.class))
+                .list();
     }
 }

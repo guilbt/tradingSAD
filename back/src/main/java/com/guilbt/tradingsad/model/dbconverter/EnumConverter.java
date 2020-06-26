@@ -12,7 +12,7 @@ public class EnumConverter<V, E extends EnumBase<V>> implements AttributeConvert
     }
 
     public V convertToDatabaseColumn(E value) {
-        if(value==null) return null;
+        if (value == null) return null;
         return value.getValue();
     }
 

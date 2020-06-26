@@ -12,30 +12,23 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 public class SimpleRestClient {
+    private static final int defaultTimeout = 60000;
     private final String server;
     private final RestTemplate rest;
     private final HttpHeaders headers;
-    private static final int defaultTimeout = 60000;
-
-    private SimpleClientHttpRequestFactory getClientHttpRequestFactory(int timeoutinMillis) {
-        SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
-        clientHttpRequestFactory.setConnectTimeout(timeoutinMillis);
-        clientHttpRequestFactory.setReadTimeout(timeoutinMillis);
-        return clientHttpRequestFactory;
-    }
 
     public SimpleRestClient(String server, int timeoutInMillis, Map<String, String> addHeaders) {
         Assert.notNull(server, "Server parameter can't be null");
         this.server = server;
         this.rest = new RestTemplate(
-            new BufferingClientHttpRequestFactory(
-                getClientHttpRequestFactory(timeoutInMillis)
-            )
+                new BufferingClientHttpRequestFactory(
+                        getClientHttpRequestFactory(timeoutInMillis)
+                )
         );
         this.headers = new HttpHeaders();
         this.headers.add("Content-Type", "application/json");
         this.headers.add("Accept", "application/json");
-        if(addHeaders!=null) {
+        if (addHeaders != null) {
             for (Map.Entry<String, String> header : addHeaders.entrySet()) {
                 this.headers.add(header.getKey(), header.getValue());
             }
@@ -56,6 +49,13 @@ public class SimpleRestClient {
 
     public SimpleRestClient(String server) {
         this(server, defaultTimeout, null);
+    }
+
+    private SimpleClientHttpRequestFactory getClientHttpRequestFactory(int timeoutinMillis) {
+        SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+        clientHttpRequestFactory.setConnectTimeout(timeoutinMillis);
+        clientHttpRequestFactory.setReadTimeout(timeoutinMillis);
+        return clientHttpRequestFactory;
     }
 
     public <E> ResponseEntity<E> get(String uri, Class<E> returnObjectClass, HttpHeaders addHeaders) {

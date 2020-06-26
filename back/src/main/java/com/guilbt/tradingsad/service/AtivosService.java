@@ -8,9 +8,7 @@ import com.guilbt.tradingsad.model.Ativo;
 import com.guilbt.tradingsad.model.Usuario;
 import com.guilbt.tradingsad.model.UsuarioAtivo;
 import com.guilbt.tradingsad.model.dto.AtivoDTO;
-import com.guilbt.tradingsad.model.dto.AtivoValoresTratadoDTO;
 import com.guilbt.tradingsad.model.dto.alphaVantage.AtivoValoresDTO;
-import com.guilbt.tradingsad.model.dto.alphaVantage.AtivoValoresDTOWrapper;
 import com.guilbt.tradingsad.service.client.AlphaVantageClient;
 import com.guilbt.tradingsad.util.PreConditions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +32,9 @@ public class AtivosService {
 
     @Autowired
     public AtivosService(
-        AtivosDAO ativosDAO,
-        UsuariosDAO usuariosDAO,
-        AtivoUsuarioDAO ativoUsuarioDAO
+            AtivosDAO ativosDAO,
+            UsuariosDAO usuariosDAO,
+            AtivoUsuarioDAO ativoUsuarioDAO
     ) {
         this.ativosDAO = ativosDAO;
         this.usuariosDAO = usuariosDAO;
@@ -48,29 +46,29 @@ public class AtivosService {
         PreConditions.notNull(valor, "valor");
         PreConditions.notNull(ativoId, "ativoId");
         Usuario usuario = usuariosDAO.getByEmail(principalEmail);
-        if(usuario.getFundos().compareTo(valor) < 0) {
+        if (usuario.getFundos().compareTo(valor) < 0) {
             throw new PreConditionException(
                     "Valor",
                     "Valor a ser investido não pode ser maior que os fundos disponíveis do usuário"
             );
         }
         Ativo ativo = Optional.of(ativosDAO.recuperar(ativoId))
-            .orElseThrow(
-                () -> new PreConditionException(
-                    "Ativo",
-                    "Id do Ativo tem que ser válido"
-            )
-        );
+                .orElseThrow(
+                        () -> new PreConditionException(
+                                "Ativo",
+                                "Id do Ativo tem que ser válido"
+                        )
+                );
         AtivoValoresDTO valores = this.buscarInformacoesPorSimbolo(ativo.getSimbolo());
         Long usuarioId = usuario.getId();
         BigDecimal quantidadeComprada = valor.divide(valores.getPreco(), 4, RoundingMode.HALF_EVEN);
         UsuarioAtivo usuarioAtivo = ativoUsuarioDAO.recuperar(usuarioId, ativoId);
-        if(usuarioAtivo == null) {
+        if (usuarioAtivo == null) {
             usuarioAtivo = new UsuarioAtivo(usuarioId, ativoId, quantidadeComprada);
             ativoUsuarioDAO.persist(usuarioAtivo);
         } else {
             usuarioAtivo.setQuantidade(
-                usuarioAtivo.getQuantidade().add(quantidadeComprada)
+                    usuarioAtivo.getQuantidade().add(quantidadeComprada)
             );
             ativoUsuarioDAO.merge(usuarioAtivo);
         }
@@ -80,16 +78,10 @@ public class AtivosService {
     }
 
     public List<AtivoDTO> buscarPorValor(BigDecimal valor) {
-        PreConditions.notNull(valor, "valor");
-        if(valor.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new PreConditionException(
-                "Valor",
-                "Valor a ser buscado tem que ser positivo"
-            );
-        }
+        PreConditions.positiveNotNullValue(valor, "valor");
         List<Ativo> ativos = ativosDAO.recuperarAtivosPorValor(valor);
         return ativos.stream().map(
-            ativo -> new AtivoDTO(ativo)
+                ativo -> new AtivoDTO(ativo)
         ).collect(Collectors.toList());
     }
 

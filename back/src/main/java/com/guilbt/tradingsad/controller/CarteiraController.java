@@ -1,6 +1,7 @@
 package com.guilbt.tradingsad.controller;
 
 import com.guilbt.tradingsad.model.dto.CarteiraDTO;
+import com.guilbt.tradingsad.model.dto.UsuarioDTO;
 import com.guilbt.tradingsad.service.CarteiraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class CarteiraController {
 
     @Autowired
     public CarteiraController(
-        CarteiraService carteiraService
+            CarteiraService carteiraService
     ) {
         this.carteiraService = carteiraService;
     }
@@ -29,6 +30,14 @@ public class CarteiraController {
             @RequestBody BigDecimal valor
     ) {
         carteiraService.inserirFundos(valor, principal.getName());
+    }
+
+    @GetMapping("/infos")
+    @ResponseStatus(value = HttpStatus.OK)
+    public UsuarioDTO buscarInfos(
+            Principal principal
+    ) {
+        return carteiraService.buscarInfos(principal.getName());
     }
 
     @GetMapping

@@ -18,21 +18,21 @@ public class AtivosDAO {
 
     public Ativo recuperar(Long ativoId) {
         return entityManager.createQuery("" +
-                "SELECT a FROM Ativo a" +
-                " where id = :ativoId ",
+                        "SELECT a FROM Ativo a" +
+                        " where id = :ativoId ",
                 Ativo.class
         ).setParameter("ativoId", ativoId)
-        .getSingleResult();
+                .getSingleResult();
     }
 
     public List<Ativo> recuperarAtivosPorValor(BigDecimal valor) {
         return entityManager.createQuery("" +
-            "SELECT a" +
-            "    FROM Ativo a" +
-            "    order by abs(valor_indicado - :valor) asc",
-            Ativo.class
+                        "SELECT a" +
+                        "    FROM Ativo a" +
+                        "    order by abs(valor_indicado - :valor) asc",
+                Ativo.class
         ).setParameter("valor", valor)
-        .setMaxResults(3)
-        .getResultList();
+                .setMaxResults(3)
+                .getResultList();
     }
 }

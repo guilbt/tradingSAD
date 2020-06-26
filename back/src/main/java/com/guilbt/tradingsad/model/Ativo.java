@@ -13,7 +13,8 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(of = "id")
 public class Ativo {
-    @Column(name = "ATIVO_ID") @Id
+    @Column(name = "ATIVO_ID")
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -29,6 +30,11 @@ public class Ativo {
     @Column(name = "TIPO", nullable = false)
     @Convert(converter = AtivoTipoConverter.class)
     private Tipo tipo;
+    @Column(name = "VANTAGEM", nullable = false)
+    @Convert(converter = AtivoVantagemConverter.class)
+    private Vantagem vantagem;
+    @Column(name = "VALOR_INDICADO", nullable = false)
+    private BigDecimal valorIndicado;
 
     public enum Tipo implements EnumBase<Integer> {
         BOLSA(0),
@@ -45,10 +51,6 @@ public class Ativo {
         }
     }
 
-    @Column(name = "VANTAGEM", nullable = false)
-    @Convert(converter = AtivoVantagemConverter.class)
-    private Vantagem vantagem;
-
     public enum Vantagem implements EnumBase<Integer> {
         VALOR_ABAIXO_NORMAL(0),
         CRESCIMENTO_ESTAVEL(1),
@@ -64,7 +66,4 @@ public class Ativo {
             return value;
         }
     }
-
-    @Column(name = "VALOR_INDICADO", nullable = false)
-    private BigDecimal valorIndicado;
 }

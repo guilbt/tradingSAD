@@ -34,16 +34,16 @@ services:
     command: 
       bash -c "cd /tradingsad; mvn clean install; 
       java -jar target/tradingsad.jar"
-  # front:
-  #   container_name: guilbt_tradingsad_front
-  #   build:
-  #     context: ./front
-  #     dockerfile: Dockerfile.dev
-  #   volumes:
-  #     - /front/node_modules
-  #     - ./front:/front
-  #   ports:
-  #     - 3000:3000
-  #   stdin_open: true    
-  #   depends_on:
-  #     - service
+  front:
+    container_name: guilbt_tradingsad_front
+    build:
+      context: ./front
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /front/node_modules
+      - ./front:/front
+    ports:
+      - 3000:3000
+    stdin_open: true    
+    depends_on:
+      - service

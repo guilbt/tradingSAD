@@ -13,7 +13,8 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 public class UsuarioAtivo {
-    @Column(name = "USUARIO_ATIVO_ID") @Id
+    @Column(name = "USUARIO_ATIVO_ID")
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

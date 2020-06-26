@@ -1,18 +1,18 @@
 package com.guilbt.tradingsad.controller;
 
 import com.guilbt.tradingsad.model.dto.AtivoDTO;
-import com.guilbt.tradingsad.model.dto.AtivoInvestidoDTO;
 import com.guilbt.tradingsad.model.dto.AtivoValoresTratadoDTO;
-import com.guilbt.tradingsad.model.dto.CarteiraDTO;
-import com.guilbt.tradingsad.model.dto.alphaVantage.AtivoValoresDTO;
 import com.guilbt.tradingsad.service.AtivosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/ativos")
@@ -22,7 +22,7 @@ public class AtivosController {
 
     @Autowired
     public AtivosController(
-        AtivosService ativosService
+            AtivosService ativosService
     ) {
         this.ativosService = ativosService;
     }
@@ -31,7 +31,7 @@ public class AtivosController {
     @ResponseStatus(value = HttpStatus.OK)
     public void investirValor(
             Principal principal,
-            @RequestBody  BigDecimal valor,
+            @RequestBody BigDecimal valor,
             @PathVariable("ativoId") Long ativoId
     ) {
         ativosService.investirValor(ativoId, valor, principal.getName());
@@ -46,11 +46,16 @@ public class AtivosController {
         return ativosService.buscarPorValor(valor);
     }
 
-    @GetMapping("/{simbolo}")
+    @GetMapping("/simbolo/{simbolo}")
     @ResponseStatus(value = HttpStatus.OK)
-    public AtivoValoresTratadoDTO getInformacoesAtivoPorSimbolo(
+    public ResponseEntity<AtivoValoresTratadoDTO> getInformacoesAtivoPorSimbolo(
             @PathVariable("simbolo") String simbolo
     ) {
-        return new AtivoValoresTratadoDTO(ativosService.buscarInformacoesPorSimbolo(simbolo));
+        CacheControl cacheControl = CacheControl.maxAge(60, TimeUnit.MINUTES)
+                .noTransform()
+                .mustRevalidate();
+        return ResponseEntity.ok().cacheControl(cacheControl).body(
+                new AtivoValoresTratadoDTO(ativosService.buscarInformacoesPorSimbolo(simbolo))
+        );
     }
 }

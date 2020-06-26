@@ -1,11 +1,11 @@
 package com.guilbt.tradingsad.service;
 
 import com.guilbt.tradingsad.dao.AtivoUsuarioDAO;
-import com.guilbt.tradingsad.dao.AtivosDAO;
 import com.guilbt.tradingsad.dao.UsuariosDAO;
 import com.guilbt.tradingsad.model.Usuario;
 import com.guilbt.tradingsad.model.dto.AtivoInvestidoDTO;
 import com.guilbt.tradingsad.model.dto.CarteiraDTO;
+import com.guilbt.tradingsad.model.dto.UsuarioDTO;
 import com.guilbt.tradingsad.model.dto.alphaVantage.AtivoValoresDTO;
 import com.guilbt.tradingsad.service.client.AlphaVantageClient;
 import com.guilbt.tradingsad.util.PreConditions;
@@ -27,8 +27,8 @@ public class CarteiraService {
 
     @Autowired
     public CarteiraService(
-        AtivoUsuarioDAO ativoUsuarioDAO,
-        UsuariosDAO usuariosDAO
+            AtivoUsuarioDAO ativoUsuarioDAO,
+            UsuariosDAO usuariosDAO
     ) {
         this.ativoUsuarioDAO = ativoUsuarioDAO;
         this.usuariosDAO = usuariosDAO;
@@ -36,19 +36,26 @@ public class CarteiraService {
 
     @Transactional
     public void inserirFundos(BigDecimal fundos, String principalEmail) {
-        PreConditions.notNull(fundos, "fundos");
+        PreConditions.positiveNotNullValue(fundos, "fundos");
         Usuario usuario = usuariosDAO.getByEmail(principalEmail);
         usuario.setFundos(fundos);
         usuariosDAO.merge(usuario);
     }
 
     @Transactional
+    public UsuarioDTO buscarInfos(String principalEmail) {
+        Usuario usuario = usuariosDAO.getByEmail(principalEmail);
+        return new UsuarioDTO(usuario.getId(), principalEmail, usuario.getFundos());
+    }
+
+    @Transactional
     public CarteiraDTO buscar(String principalEmail) {
         Usuario usuario = usuariosDAO.getByEmail(principalEmail);
         List<AtivoInvestidoDTO> ativos = ativoUsuarioDAO.getAtivosInvestidosByUsuario(usuario.getId());
-        for(AtivoInvestidoDTO ativo : ativos) {
+        for (AtivoInvestidoDTO ativo : ativos) {
             AlphaVantageClient client = new AlphaVantageClient();
             AtivoValoresDTO ativoValoresDTO = client.getInformacoesPorSimbolo(ativo.getSimbolo());
+            ativo.setPrecoUnitario(ativoValoresDTO.getPreco());
             ativo.setValorTotal(ativoValoresDTO.getPreco().multiply(ativo.getQuantidade()).setScale(4, RoundingMode.HALF_EVEN));
         }
         return new CarteiraDTO(usuario.getFundos(), ativos);

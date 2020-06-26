@@ -36,34 +36,34 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
-            .dataSource(dataSource)
-            .usersByUsernameQuery("select email, senha, 1 "
-                    + "from teste.usuario "
-                    + "where email = ?")
-            .authoritiesByUsernameQuery("select email, 'USER'"
-                    + "from teste.usuario "
-                    + "where email = ?");
+                .dataSource(dataSource)
+                .usersByUsernameQuery("select email, senha, 1 "
+                        + "from teste.usuario "
+                        + "where email = ?")
+                .authoritiesByUsernameQuery("select email, 'USER'"
+                        + "from teste.usuario "
+                        + "where email = ?");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            .cors().and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.OPTIONS, "**").permitAll()
-            .antMatchers("/login*").permitAll()
-            .antMatchers("/source").permitAll()
-            .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
+                .csrf().disable()
+                .cors().and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "**").permitAll()
+                .antMatchers("/login*").permitAll()
+                .antMatchers("/source").permitAll()
+                .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
                 .permitAll()
-            .anyRequest().authenticated()
-            .and()
+                .anyRequest().authenticated()
+                .and()
 
-            .formLogin()
+                .formLogin()
                 .loginProcessingUrl("/login")
-                    .failureHandler(authFailureHandler())
-                    .successHandler(authSuccessHandler())
-            .and()
+                .failureHandler(authFailureHandler())
+                .successHandler(authSuccessHandler())
+                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomExceptionAdvice());
     }
@@ -85,6 +85,15 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public AuthenticationFailureHandler authFailureHandler() {
+        return new AuthFailureHandler();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authSuccessHandler() {
+        return new AuthSuccessHandler();
+    }
 
     private class AuthFailureHandler implements AuthenticationFailureHandler {
         @Override
@@ -95,6 +104,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
             response.setStatus(HttpStatus.BAD_REQUEST.value());
         }
     }
+
     private class AuthSuccessHandler implements AuthenticationSuccessHandler {
         @Override
         public void onAuthenticationSuccess(
@@ -103,15 +113,6 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 Authentication auth) {
             response.setStatus(HttpStatus.OK.value());
         }
-    }
-
-    @Bean
-    public AuthenticationFailureHandler authFailureHandler() {
-        return new AuthFailureHandler();
-    }
-    @Bean
-    public AuthenticationSuccessHandler authSuccessHandler() {
-        return new AuthSuccessHandler();
     }
 
 }
