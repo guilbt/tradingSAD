@@ -43,7 +43,7 @@ services:
       - /front/node_modules
       - ./front:/front
     ports:
-      - 3000:3000
+      - 3001:3000
     stdin_open: true    
     depends_on:
       - service
